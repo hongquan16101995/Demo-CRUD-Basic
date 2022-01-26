@@ -9,8 +9,8 @@ public class ProductService {
 
     static {
         products = new ArrayList<>();
-        products.add(new Product(1, "Iphone", 100000));
-        products.add(new Product(2, "Samsung", 200000));
+        products.add(new Product(1, "Quân", 100000));
+        products.add(new Product(2, "Toàn", 200000));
         products.add(new Product(3, "Oppo", 300000));
     }
 

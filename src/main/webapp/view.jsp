@@ -5,11 +5,12 @@
   Time: 9:38 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>Title</title>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
     <style>
         table {
             width: 400px;
@@ -21,7 +22,12 @@
 <c:if test="products.isEmpty()">
     <p style="color: red">Không có sản phẩn nào</p>
 </c:if>
-<a href="/home?action=createGet">Create new product</a>
+
+<c:url value="/home" var="url">
+<c:param name="action" value="createGet"/>
+</c:url>
+
+<a href="${url}">Create new product</a>
 <table>
     <tr>
         <td>ID</td>
