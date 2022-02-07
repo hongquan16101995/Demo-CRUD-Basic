@@ -6,15 +6,16 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
+<c:if test="${requestScope['mess'] != null}">
+    <h1>${requestScope['mess']}</h1>
+</c:if>
 <form action="${pageContext.request.contextPath}/home?action=createPost" method="post">
-    <label for="id">ID :
-        <input type="text" id="id" name="id">
-    </label>
     <label for="name">Name :
         <input type="text" id="name" name="name">
     </label>
@@ -23,5 +24,6 @@
     </label>
     <input type="submit" value="Create">
 </form>
+<a href="/home">Back to home</a>
 </body>
 </html>

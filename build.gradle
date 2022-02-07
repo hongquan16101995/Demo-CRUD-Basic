@@ -11,9 +11,15 @@ repositories {
 }
 
 dependencies {
+    //thư viện servlet
     compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+
+    // 2 thư viện JSTL
     implementation group: 'org.apache.taglibs', name: 'taglibs-standard-spec', version: '1.2.5'
     runtimeOnly group: 'org.apache.taglibs', name: 'taglibs-standard-impl', version: '1.2.5'
+
+    //thư viện kết nối SQL
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.23'
 }
 
 test {

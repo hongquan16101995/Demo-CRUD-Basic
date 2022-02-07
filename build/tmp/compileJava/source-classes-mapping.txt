@@ -1,6 +1,16 @@
-model/Product.java
- model.Product
+connection/MyConnection.java
+ connection.MyConnection
+service/IProductService.java
+ service.IProductService
 service/ProductService.java
  service.ProductService
+model/Product.java
+ model.Product
 controller/ProductServlet.java
  controller.ProductServlet
+service/ProductServiceImpl.java
+ service.ProductServiceImpl
+model/Category.java
+ model.Category
+model/Product_Cate.java
+ model.Product_Cate

@@ -1,7 +1,9 @@
 package controller;
 
 import model.Product;
+import model.Product_Cate;
 import service.ProductService;
+import service.ProductServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 @WebServlet(name = "ProductServlet", urlPatterns = "/home")
 public class ProductServlet extends HttpServlet {
     private final ProductService productService = new ProductService();
+    private final ProductServiceImpl productServiceImpl = new ProductServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -49,13 +52,20 @@ public class ProductServlet extends HttpServlet {
                 deleteProduct(request, response);
                 break;
             default:
-                displayProduct(request, response);
+                display(request, response);
         }
+    }
+
+    public void display(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ArrayList<Product_Cate> products = productServiceImpl.getAll();
+        request.setAttribute("products", products);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("view.jsp");
+        requestDispatcher.forward(request, response);
     }
 
     //đọc cả list product với doGet
     public void displayProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<Product> products = productService.display();
+        ArrayList<Product> products = productServiceImpl.getAllProducts();
         request.setAttribute("products", products);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("view.jsp");
         requestDispatcher.forward(request, response);
@@ -68,20 +78,20 @@ public class ProductServlet extends HttpServlet {
 
     //tạo mới đối tượng với doPost, thêm vào list, trả list cho view, điều hướng sang view.jsp
     public void createProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+//        int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         double price = Double.parseDouble(request.getParameter("price"));
-        productService.addProduct(new Product(id, name, price));
-        ArrayList<Product> products = productService.display();
-        request.setAttribute("products", products);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("view.jsp");
+        productServiceImpl.addProduct(new Product( name, price));
+        String mess = "Tạo thành công";
+        request.setAttribute("mess", mess);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("create.jsp");
         requestDispatcher.forward(request, response);
     }
 
     //edit với doGet, điều hướng sang edit.jsp
     public void editControl(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        Product product = productService.getProduct(id);
+        Product product = productServiceImpl.getProduct(id);
         if (product != null) {
             request.setAttribute("product", product);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("edit.jsp");
@@ -92,20 +102,13 @@ public class ProductServlet extends HttpServlet {
     //chỉnh sửa đối tượng với doPost, cập nhật trong list, trả list cho view, điều hướng sang view.jsp
     public void editProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        Product product = productService.getProduct(id);
+        Product product = productServiceImpl.getProduct(id);
         if (product != null) {
             product.setName(request.getParameter("name"));
             product.setPrice(Double.parseDouble(request.getParameter("price")));
+            productServiceImpl.editProduct(id, product);
         }
-        int index = -1;
-        ArrayList<Product> products = productService.display();
-        for (int i = 0; i < products.size(); i++) {
-            if (products.get(i).getId() == product.getId()) {
-                index = i;
-            }
-        }
-        productService.editProduct(index, product);
-        products = productService.display();
+        ArrayList<Product> products = productServiceImpl.getAllProducts();
         request.setAttribute("products", products);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("view.jsp");
         requestDispatcher.forward(request, response);
